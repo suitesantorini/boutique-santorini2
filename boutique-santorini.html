@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Boutique · Suite Santorini</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --white:#FAFAF8; --cream:#F5F0E8; --blue-deep:#1B3A6B; --gold:#C9A96E;
+  --gold-light:#F0DEB8; --gold-dark:#A07840; --charcoal:#2A2A2A;
+  --grey:#7A7A7A; --grey-light:#EDEBE6; --success:#2E7D5E;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Jost',sans-serif;background:var(--white);color:var(--charcoal);overflow-x:hidden;}
+
+/* BANNER */
+.hero-banner{background:var(--blue-deep);padding:2.2rem 4rem;display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap;}
+.hero-brand{display:flex;align-items:center;gap:2rem;}
+.brand-logo{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:300;letter-spacing:.15em;color:var(--white);text-decoration:none;}
+.brand-sep{width:1px;height:36px;background:rgba(255,255,255,.2);}
+.brand-sub{font-size:.62rem;font-weight:400;letter-spacing:.3em;text-transform:uppercase;color:var(--gold-light);}
+.cart-btn{display:flex;align-items:center;gap:.6rem;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);color:var(--white);padding:.65rem 1.4rem;cursor:pointer;font-family:'Jost',sans-serif;font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;transition:all .3s;}
+.cart-btn:hover{background:var(--gold);border-color:var(--gold);}
+.cart-count{background:var(--gold);color:var(--white);width:18px;height:18px;border-radius:50%;font-size:.65rem;font-weight:600;display:flex;align-items:center;justify-content:center;transition:transform .3s;}
+.cart-count.bump{transform:scale(1.4);}
+
+/* INTRO */
+.intro{background:var(--cream);padding:3rem 4rem;display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap;border-bottom:1px solid rgba(201,169,110,.25);}
+.intro-label{font-size:.62rem;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);margin-bottom:.7rem;}
+.intro h1{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:300;line-height:1.2;color:var(--blue-deep);margin-bottom:.8rem;}
+.intro h1 em{font-style:italic;color:var(--gold-dark);}
+.intro p{font-size:.88rem;font-weight:300;color:var(--grey);line-height:1.8;max-width:480px;}
+.intro-badge{display:flex;flex-direction:column;align-items:center;justify-content:center;width:120px;height:120px;border-radius:50%;background:var(--blue-deep);color:var(--white);text-align:center;flex-shrink:0;}
+.badge-big{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;color:var(--gold-light);line-height:1;}
+.badge-small{font-size:.5rem;letter-spacing:.12em;text-transform:uppercase;opacity:.75;padding:.2rem .5rem;line-height:1.5;}
+
+/* PRODUCTS */
+.products-section{padding:4rem 4rem 5rem;}
+.products-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;max-width:1200px;margin:0 auto;}
+.product-card{border:1px solid var(--grey-light);background:var(--white);display:flex;flex-direction:column;transition:border-color .3s,box-shadow .3s,transform .3s;position:relative;overflow:hidden;}
+.product-card:hover{border-color:var(--gold);box-shadow:0 12px 40px rgba(201,169,110,.15);transform:translateY(-4px);}
+.product-card.featured{grid-column:span 2;}
+.product-img{height:230px;overflow:hidden;position:relative;}
+.product-card.featured .product-img{height:300px;}
+.product-img img{width:100%;height:100%;object-fit:cover;transition:transform .7s ease;display:block;}
+.product-card:hover .product-img img{transform:scale(1.05);}
+.product-tag{position:absolute;top:1rem;left:1rem;background:var(--blue-deep);color:var(--white);font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;padding:.3rem .8rem;}
+.product-tag.bestseller{background:var(--gold);}
+.product-body{padding:1.8rem;display:flex;flex-direction:column;flex:1;}
+.product-emoji{font-size:1.6rem;margin-bottom:.6rem;}
+.product-name{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:400;color:var(--blue-deep);margin-bottom:.5rem;line-height:1.2;}
+.product-desc{font-size:.8rem;font-weight:300;color:var(--grey);line-height:1.7;margin-bottom:1rem;flex:1;}
+.product-includes{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1.2rem;}
+.include-tag{font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;background:var(--grey-light);color:var(--charcoal);padding:.25rem .6rem;}
+.product-footer{display:flex;align-items:center;justify-content:space-between;gap:1rem;border-top:1px solid var(--grey-light);padding-top:1.2rem;margin-top:auto;}
+.product-price{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;color:var(--gold);line-height:1;}
+.product-price span{font-size:.9rem;color:var(--grey);font-family:'Jost',sans-serif;font-weight:300;}
+.add-btn{display:flex;align-items:center;gap:.5rem;background:var(--blue-deep);color:var(--white);border:none;cursor:pointer;padding:.75rem 1.4rem;font-family:'Jost',sans-serif;font-size:.7rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;transition:all .3s;white-space:nowrap;}
+.add-btn:hover{background:var(--gold);}
+.add-btn.added{background:var(--success);}
+.qty-selector{display:none;align-items:center;border:1px solid var(--grey-light);overflow:hidden;}
+.qty-selector.visible{display:flex;}
+.qty-btn{width:32px;height:38px;background:none;border:none;cursor:pointer;font-size:1.1rem;color:var(--charcoal);transition:background .2s;display:flex;align-items:center;justify-content:center;}
+.qty-btn:hover{background:var(--grey-light);}
+.qty-num{width:32px;text-align:center;font-size:.85rem;font-weight:500;color:var(--charcoal);line-height:38px;user-select:none;}
+
+/* CART SIDEBAR */
+.cart-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;}
+.cart-overlay.open{display:block;}
+.cart-sidebar{position:fixed;top:0;right:-480px;width:460px;height:100vh;background:var(--white);z-index:201;box-shadow:-20px 0 60px rgba(0,0,0,.15);display:flex;flex-direction:column;transition:right .4s cubic-bezier(.4,0,.2,1);overflow:hidden;}
+.cart-sidebar.open{right:0;}
+.cart-header{padding:2rem 1.8rem 1.5rem;border-bottom:1px solid var(--grey-light);display:flex;align-items:center;justify-content:space-between;}
+.cart-title{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:300;color:var(--blue-deep);}
+.cart-close{background:none;border:none;cursor:pointer;font-size:1.5rem;color:var(--grey);transition:color .2s;}
+.cart-close:hover{color:var(--charcoal);}
+.cart-items{flex:1;overflow-y:auto;padding:1.5rem 1.8rem;}
+.cart-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:1rem;color:var(--grey);text-align:center;}
+.cart-empty-icon{font-size:3rem;opacity:.4;}
+.cart-empty p{font-size:.85rem;font-weight:300;}
+.cart-item{display:flex;gap:1rem;padding:1rem 0;border-bottom:1px solid var(--grey-light);align-items:flex-start;}
+.cart-item-emoji{font-size:2rem;flex-shrink:0;width:48px;text-align:center;}
+.cart-item-info{flex:1;}
+.cart-item-name{font-size:.88rem;font-weight:500;color:var(--charcoal);margin-bottom:.2rem;}
+.cart-item-price{font-size:.8rem;color:var(--gold);}
+.cart-item-qty{display:flex;align-items:center;gap:.5rem;margin-top:.5rem;}
+.cq-btn{width:24px;height:24px;border:1px solid var(--grey-light);background:none;cursor:pointer;font-size:.8rem;color:var(--charcoal);display:flex;align-items:center;justify-content:center;transition:background .2s;}
+.cq-btn:hover{background:var(--grey-light);}
+.cq-num{font-size:.8rem;font-weight:500;min-width:20px;text-align:center;}
+.cart-item-remove{background:none;border:none;cursor:pointer;color:var(--grey);font-size:1.1rem;padding:.2rem;transition:color .2s;align-self:center;}
+.cart-item-remove:hover{color:#c0392b;}
+.cart-footer{padding:1.5rem 1.8rem;border-top:1px solid var(--grey-light);background:var(--cream);}
+.cart-subtotal{display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;}
+.cart-subtotal-label{font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;color:var(--grey);}
+.cart-subtotal-amount{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;color:var(--blue-deep);}
+.cart-note{font-size:.7rem;color:var(--grey);margin-bottom:1.2rem;font-weight:300;line-height:1.5;}
+.checkout-btn{width:100%;padding:1rem;background:var(--gold);color:var(--white);border:none;cursor:pointer;font-family:'Jost',sans-serif;font-size:.75rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;transition:background .3s;display:flex;align-items:center;justify-content:center;gap:.6rem;}
+.checkout-btn:hover{background:var(--gold-dark);}
+.checkout-btn:disabled{background:var(--grey-light);color:var(--grey);cursor:not-allowed;}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:300;align-items:center;justify-content:center;padding:1.5rem;}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--white);width:100%;max-width:560px;max-height:90vh;overflow-y:auto;position:relative;animation:modalIn .3s ease;}
+@keyframes modalIn{from{opacity:0;transform:scale(.95) translateY(20px);}to{opacity:1;transform:none;}}
+.modal-header{padding:2rem 2.5rem 1.5rem;border-bottom:1px solid var(--grey-light);display:flex;align-items:center;justify-content:space-between;}
+.modal-title{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;color:var(--blue-deep);}
+.modal-close{background:none;border:none;cursor:pointer;font-size:1.5rem;color:var(--grey);}
+.modal-body{padding:2rem 2.5rem;}
+.form-section{margin-bottom:1.8rem;}
+.form-section-title{font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;padding-bottom:.5rem;border-bottom:1px solid var(--grey-light);}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;}
+.form-row.full{grid-template-columns:1fr;}
+.form-group{display:flex;flex-direction:column;gap:.4rem;}
+.form-label{font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--grey);font-weight:400;}
+.form-input{border:1px solid var(--grey-light);padding:.75rem 1rem;font-family:'Jost',sans-serif;font-size:.88rem;font-weight:300;color:var(--charcoal);background:var(--white);transition:border-color .3s;outline:none;}
+.form-input:focus{border-color:var(--gold);}
+.form-input::placeholder{color:#bbb;}
+.order-recap{background:var(--cream);padding:1.2rem 1.5rem;margin-bottom:1.5rem;}
+.recap-title{font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:.8rem;}
+.recap-item{display:flex;justify-content:space-between;font-size:.82rem;padding:.3rem 0;}
+.recap-total{display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(201,169,110,.3);margin-top:.6rem;padding-top:.6rem;}
+.recap-total-label{font-size:.75rem;font-weight:500;text-transform:uppercase;letter-spacing:.1em;}
+.recap-total-amount{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:300;color:var(--gold);}
+.payment-methods{margin-bottom:1.5rem;}
+.payment-title{font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;padding-bottom:.5rem;border-bottom:1px solid var(--grey-light);}
+.payment-options{display:flex;flex-direction:column;gap:.7rem;}
+.payment-option{display:flex;align-items:center;gap:.8rem;padding:.9rem 1rem;border:1px solid var(--grey-light);cursor:pointer;transition:border-color .3s;}
+.payment-option:hover,.payment-option.selected{border-color:var(--gold);background:rgba(201,169,110,.05);}
+.payment-radio{width:16px;height:16px;border-radius:50%;border:2px solid var(--grey-light);flex-shrink:0;transition:all .2s;}
+.payment-option.selected .payment-radio{border-color:var(--gold);background:var(--gold);}
+.payment-icon{font-size:1.2rem;}
+.payment-label{font-size:.82rem;font-weight:400;color:var(--charcoal);}
+.payment-sub{font-size:.7rem;color:var(--grey);font-weight:300;}
+.submit-btn{width:100%;padding:1.1rem;background:var(--gold);color:var(--white);border:none;cursor:pointer;font-family:'Jost',sans-serif;font-size:.78rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;transition:background .3s;display:flex;align-items:center;justify-content:center;gap:.6rem;}
+.submit-btn:hover{background:var(--gold-dark);}
+.success-screen{display:none;flex-direction:column;align-items:center;justify-content:center;padding:3rem 2.5rem;text-align:center;gap:1.2rem;}
+.success-screen.show{display:flex;}
+.success-icon{font-size:4rem;}
+.success-title{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;color:var(--blue-deep);}
+.success-text{font-size:.88rem;font-weight:300;color:var(--grey);line-height:1.8;max-width:380px;}
+.success-detail{background:var(--cream);padding:1.2rem 1.8rem;width:100%;font-size:.82rem;font-weight:300;color:var(--charcoal);line-height:1.8;text-align:left;}
+
+footer{background:var(--charcoal);padding:2.5rem 4rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;}
+.footer-logo{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:300;letter-spacing:.15em;color:var(--white);}
+.footer-text{font-size:.68rem;color:rgba(255,255,255,.4);}
+.footer-back{font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-light);text-decoration:none;border-bottom:1px solid rgba(201,169,110,.3);padding-bottom:1px;transition:color .3s;}
+.footer-back:hover{color:var(--white);}
+
+@media(max-width:900px){
+  .hero-banner,.intro{padding:1.5rem;}
+  .products-section{padding:2.5rem 1.5rem;}
+  .products-grid{grid-template-columns:1fr 1fr;}
+  .product-card.featured{grid-column:span 2;}
+  .cart-sidebar{width:100%;right:-100%;}
+  footer{padding:2rem 1.5rem;flex-direction:column;text-align:center;}
+  .form-row{grid-template-columns:1fr;}
+}
+@media(max-width:600px){
+  .products-grid{grid-template-columns:1fr;}
+  .product-card.featured{grid-column:span 1;}
+  .intro-badge{display:none;}
+}
+</style>
+</head>
+<body>
+
+<header class="hero-banner">
+  <div class="hero-brand">
+    <a href="index.html" class="brand-logo">SUITE SANTORINI</a>
+    <div class="brand-sep"></div>
+    <div class="brand-sub">La Boutique · Attentions sur mesure</div>
+  </div>
+  <button type="button" class="cart-btn" onclick="toggleCart()">
+    🛍 Mon panier <div class="cart-count" id="cartCount">0</div>
+  </button>
+</header>
+
+<div class="intro">
+  <div class="intro-text">
+    <div class="intro-label">Personnalisez votre séjour</div>
+    <h1>Des attentions<br><em>pour un moment inoubliable</em></h1>
+    <p>Commandez à l'avance et retrouvez vos attentions directement dans votre suite à votre arrivée. Minimum 24h avant le check-in.</p>
+  </div>
+  <div class="intro-badge">
+    <div class="badge-big">24h</div>
+    <div class="badge-small">À commander avant arrivée</div>
+  </div>
+</div>
+
+<section class="products-section">
+  <div class="products-grid">
+
+    <!-- 1. Décoration Romantique (featured) -->
+    <div class="product-card featured">
+      <div class="product-img">
+        <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1544195021378079668/original/01412a00-7dab-48ba-8d77-2e57b6a48126.jpeg?im_w=1200" alt="Décoration Romantique">
+        <div class="product-tag bestseller">⭐ Bestseller</div>
+      </div>
+      <div class="product-body">
+        <div class="product-emoji">🌹</div>
+        <div class="product-name">Décoration Romantique</div>
+        <div class="product-desc">Sublimez votre arrivée avec une mise en scène romantique préparée par Romain avant votre check-in. Un accueil qui marque les esprits et crée la surprise.</div>
+        <div class="product-includes">
+          <span class="include-tag">Pétales de rose</span>
+          <span class="include-tag">Ballons cœurs</span>
+          <span class="include-tag">Bougies</span>
+          <span class="include-tag">Mise en scène complète</span>
+        </div>
+        <div class="product-footer">
+          <div class="product-price">29 € </div>
+          <div style="display:flex;align-items:center;gap:.6rem;">
+            <div class="qty-selector" id="qty-1"><button type="button" class="qty-btn" onclick="changeQty(1,-1)">−</button><div class="qty-num" id="qnum-1">1</div><button type="button" class="qty-btn" onclick="changeQty(1,1)">+</button></div>
+            <button type="button" class="add-btn" id="addbtn-1" data-id="1" onclick="addToCart(this)"><span class="btn-icon">+</span> Ajouter</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. Arrivée Anticipée (featured) -->
+    <div class="product-card featured">
+      <div class="product-img">
+        <img src="https://img.freepik.com/premium-photo/loving-couple-walking-with-suitcases-airport_116547-39422.jpg?w=996" alt="Arrivée anticipée">
+        <div class="product-tag" style="background:var(--gold);">✨ À la une</div>
+      </div>
+      <div class="product-body">
+        <div class="product-emoji">🧳</div>
+        <div class="product-name">Arrivée Anticipée</div>
+        <div class="product-desc">Profitez de votre suite dès 15h au lieu de 17h. Deux heures de plus pour vous détendre, vous installer et commencer à profiter.</div>
+        <div class="product-includes">
+          <span class="include-tag">Check-in dès 15h</span>
+          <span class="include-tag">+2h de suite</span>
+        </div>
+        <div class="product-footer">
+          <div class="product-price">24 € </div>
+          <div style="display:flex;align-items:center;gap:.6rem;">
+            <div class="qty-selector" id="qty-5"><button type="button" class="qty-btn" onclick="changeQty(5,-1)">−</button><div class="qty-num" id="qnum-5">1</div><button type="button" class="qty-btn" onclick="changeQty(5,1)">+</button></div>
+            <button type="button" class="add-btn" id="addbtn-5" data-id="5" onclick="addToCart(this)"><span class="btn-icon">+</span> Ajouter</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. Départ Tardif (featured) -->
+    <div class="product-card featured">
+      <div class="product-img">
+        <img src="https://laviedesreines.com/wp-content/uploads/2020/10/couple-together-in-bed-2048x1365.jpg" alt="Départ tardif">
+        <div class="product-tag" style="background:var(--gold);">✨ À la une</div>
+      </div>
+      <div class="product-body">
+        <div class="product-emoji">☀️</div>
+        <div class="product-name">Départ Tardif</div>
+        <div class="product-desc">Restez au lit jusqu'à 13h au lieu de 11h. Profitez de votre dernière matinée sans stress ni précipitation.</div>
+        <div class="product-includes">
+          <span class="include-tag">Check-out jusqu'à 13h</span>
+          <span class="include-tag">+2h de suite</span>
+        </div>
+        <div class="product-footer">
+          <div class="product-price">24 € </div>
+          <div style="display:flex;align-items:center;gap:.6rem;">
+            <div class="qty-selector" id="qty-6"><button type="button" class="qty-btn" onclick="changeQty(6,-1)">−</button><div class="qty-num" id="qnum-6">1</div><button type="button" class="qty-btn" onclick="changeQty(6,1)">+</button></div>
+            <button type="button" class="add-btn" id="addbtn-6" data-id="6" onclick="addToCart(this)"><span class="btn-icon">+</span> Ajouter</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Attention Pétillante -->
+    <div class="product-card">
+      <div class="product-img">
+        <img src="https://lachampagnedesophieclaeys.fr/wp-content/uploads/2022/05/3F45FE59-A414-4978-A20B-73BD760178C4-scaled.jpeg" alt="Champagne">
+        <div class="product-tag">Coup de cœur</div>
+      </div>
+      <div class="product-body">
+        <div class="product-emoji">🥂</div>
+        <div class="product-name">Attention Pétillante</div>
+        <div class="product-desc">Une bouteille de champagne au frais dans votre suite pour un toast mémorable dès votre arrivée.</div>
+        <div class="product-includes">
+          <span class="include-tag">Champagne</span>
+          <span class="include-tag">Mis au frais</span>
+        </div>
+        <div class="product-footer">
+          <div class="product-price">49 € </div>
+          <div style="display:flex;align-items:center;gap:.6rem;">
+            <div class="qty-selector" id="qty-2"><button type="button" class="qty-btn" onclick="changeQty(2,-1)">−</button><div class="qty-num" id="qnum-2">1</div><button type="button" class="qty-btn" onclick="changeQty(2,1)">+</button></div>
+            <button type="button" class="add-btn" id="addbtn-2" data-id="2" onclick="addToCart(this)"><span class="btn-icon">+</span> Ajouter</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Pack Sucré -->
+    <div class="product-card">
+      <div class="product-img">
+        <img src="https://rq1sg9-1t.myshopify.com/cdn/shop/files/petit-dej-ideal.jpg?v=1766268798&width=533" alt="Pack Sucré">
+      </div>
+      <div class="product-body">
+        <div class="product-emoji">🍰</div>
+        <div class="product-name">Pack Sucré <span style="font-size:.6rem;font-weight:300;color:var(--grey);font-family:'Jost',sans-serif;font-style:italic;">(photo non contractuelle)</span></div>
+        <div class="product-desc">Un plateau de douceurs pour un réveil gourmand dans votre suite méditerranéenne.</div>
+        <div class="product-includes">
+          <span class="include-tag">Jus de fruit</span>
+          <span class="include-tag">Madeleines</span>
+          <span class="include-tag">Petit prince</span>
+          <span class="include-tag">Café & thés</span>
+        </div>
+        <div class="product-footer">
+          <div class="product-price">14 € </div>
+          <div style="display:flex;align-items:center;gap:.6rem;">
+            <div class="qty-selector" id="qty-3"><button type="button" class="qty-btn" onclick="changeQty(3,-1)">−</button><div class="qty-num" id="qnum-3">1</div><button type="button" class="qty-btn" onclick="changeQty(3,1)">+</button></div>
+            <button type="button" class="add-btn" id="addbtn-3" data-id="3" onclick="addToCart(this)"><span class="btn-icon">+</span> Ajouter</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. Pack Salé -->
+    <div class="product-card">
+      <div class="product-img">
+        <img src="https://rq1sg9-1t.myshopify.com/cdn/shop/files/eccbc87e4b5ce2fe28308fd9f2a7baf3-phb-1926-5f871fb702212.jpg?v=1766268920&width=533" alt="Pack Salé">
+      </div>
+      <div class="product-body">
+        <div class="product-emoji">🧀</div>
+        <div class="product-name">Pack Salé <span style="font-size:.6rem;font-weight:300;color:var(--grey);font-family:'Jost',sans-serif;font-style:italic;">(photo non contractuelle)</span></div>
+        <div class="product-desc">L'apéro parfait pour votre soirée en amoureux. Tout est prêt à votre arrivée.</div>
+        <div class="product-includes">
+          <span class="include-tag">Soda</span>
+          <span class="include-tag">Chips</span>
+          <span class="include-tag">Cacahuètes</span>
+          <span class="include-tag">Crackers</span>
+          <span class="include-tag">Olives</span>
+        </div>
+        <div class="product-footer">
+          <div class="product-price">14 € </div>
+          <div style="display:flex;align-items:center;gap:.6rem;">
+            <div class="qty-selector" id="qty-4"><button type="button" class="qty-btn" onclick="changeQty(4,-1)">−</button><div class="qty-num" id="qnum-4">1</div><button type="button" class="qty-btn" onclick="changeQty(4,1)">+</button></div>
+            <button type="button" class="add-btn" id="addbtn-4" data-id="4" onclick="addToCart(this)"><span class="btn-icon">+</span> Ajouter</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CART SIDEBAR -->
+<div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+<div class="cart-sidebar" id="cartSidebar">
+  <div class="cart-header">
+    <div class="cart-title">Mon panier</div>
+    <button type="button" class="cart-close" onclick="toggleCart()">×</button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <div class="cart-empty"><div class="cart-empty-icon">🛍</div><p>Votre panier est vide.<br>Ajoutez des attentions pour sublimer votre séjour.</p></div>
+  </div>
+  <div class="cart-footer">
+    <div class="cart-subtotal">
+      <div class="cart-subtotal-label">Total</div>
+      <div class="cart-subtotal-amount" id="cartTotal">0 €</div>
+    </div>
+    <div class="cart-note">🔒 Paiement sécurisé · Livraison dans votre suite</div>
+    <button type="button" class="checkout-btn" id="checkoutBtn" onclick="openCheckout()" disabled>Commander → <span id="checkoutTotal">0 €</span></button>
+  </div>
+</div>
+
+<!-- CHECKOUT MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" id="checkoutModal">
+    <div id="checkoutForm">
+      <div class="modal-header">
+        <div class="modal-title">Finaliser ma commande</div>
+        <button type="button" class="modal-close" onclick="closeCheckout()">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="order-recap" id="orderRecap"></div>
+        <div class="form-section">
+          <div class="form-section-title">Vos informations</div>
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">Prénom *</label><input class="form-input" id="firstName" type="text" placeholder="Marie" required></div>
+            <div class="form-group"><label class="form-label">Nom *</label><input class="form-input" id="lastName" type="text" placeholder="Dupont" required></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">Email *</label><input class="form-input" id="email" type="email" placeholder="marie@email.com" required></div>
+            <div class="form-group"><label class="form-label">Téléphone *</label><input class="form-input" id="phone" type="tel" placeholder="+33 6 00 00 00 00" required></div>
+          </div>
+        </div>
+        <div class="form-section">
+          <div class="form-section-title">Votre réservation</div>
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">Date d'arrivée *</label><input class="form-input" id="checkin" type="date" required></div>
+            <div class="form-group"><label class="form-label">Date de départ</label><input class="form-input" id="checkout" type="date"></div>
+          </div>
+          <div class="form-row full">
+            <div class="form-group"><label class="form-label">Message / demande spéciale</label><input class="form-input" id="message" type="text" placeholder="Ex : anniversaire, demande en mariage..."></div>
+          </div>
+        </div>
+        <div class="payment-methods">
+          <div class="payment-title">Paiement par carte bancaire</div>
+          <div style="background:var(--cream);padding:.8rem 1.2rem;margin-bottom:.8rem;border-left:3px solid var(--gold);font-size:.75rem;color:var(--grey);font-weight:300;">
+            🔒 Paiement 100% sécurisé par Stripe · Visa, Mastercard, American Express acceptées
+          </div>
+          <div id="stripe-card-element" style="border:1px solid var(--grey-light);padding:.9rem 1rem;background:var(--white);font-size:.9rem;"></div>
+          <div id="stripe-error" style="color:#c0392b;font-size:.75rem;margin-top:.5rem;min-height:1rem;"></div>
+        </div>
+        <button type="button" class="submit-btn" id="submitBtn" onclick="submitOrder()">💳 Payer par carte</button>
+      </div>
+    </div>
+    <div class="success-screen" id="successScreen">
+      <div class="success-icon">✅</div>
+      <div class="success-title">Paiement effectué !</div>
+      <p class="success-text">Merci pour votre commande ! Romain a été notifié et vos attentions seront prêtes dans votre suite à votre arrivée.</p>
+      <div class="success-detail" id="successDetail"></div>
+      <button type="button" class="submit-btn" style="width:auto;padding:.8rem 2rem;" onclick="closeCheckout()">Fermer</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">SUITE SANTORINI · La Boutique</div>
+  <p class="footer-text">Pézenas, Occitanie · Minimum 24h avant l'arrivée</p>
+  <a href="index.html" class="footer-back">← Retour au site principal</a>
+</footer>
+
+<script>
+var cart = {};
+var selectedPayment = 'virement';
+
+var products = {
+  1: { name: 'Decoration Romantique', label: 'D\u00e9coration Romantique', price: 29,  emoji: '\uD83C\uDF39' },
+  2: { name: 'Attention Petillante',  label: 'Attention P\u00e9tillante',  price: 49,  emoji: '\uD83E\uDD42' },
+  3: { name: 'Pack Sucre',            label: 'Pack Sucr\u00e9',            price: 14,  emoji: '\uD83C\uDF70' },
+  4: { name: 'Pack Sale',             label: 'Pack Sal\u00e9',             price: 14,  emoji: '\uD83E\uDDC0' },
+  5: { name: 'Arrivee Anticipee',     label: 'Arriv\u00e9e Anticip\u00e9e',price: 24,  emoji: '\uD83E\uDDF3' },
+  6: { name: 'Depart Tardif',         label: 'D\u00e9part Tardif',         price: 24,  emoji: '\u2600\uFE0F' }
+};
+
+function addToCart(el) {
+  var id = parseInt(el.getAttribute('data-id'));
+  var p = products[id];
+  if (!p) return;
+  var qEl = document.getElementById('qnum-' + id);
+  var qty = qEl ? parseInt(qEl.textContent) || 1 : 1;
+  if (cart[id]) {
+    cart[id].qty += qty;
+  } else {
+    cart[id] = { label: p.label, price: p.price, emoji: p.emoji, qty: qty };
+  }
+  var addBtn = document.getElementById('addbtn-' + id);
+  if (addBtn) {
+    addBtn.classList.add('added');
+    addBtn.textContent = '\u2713 Ajout\u00e9 !';
+    setTimeout(function() {
+      addBtn.classList.remove('added');
+      addBtn.textContent = '+ Ajouter';
+    }, 1800);
+  }
+  if (qEl) qEl.textContent = '1';
+  updateCartUI();
+  openCart();
+}
+
+function changeQty(id, d) {
+  var el = document.getElementById('qnum-' + id);
+  if (el) el.textContent = Math.max(1, parseInt(el.textContent) + d);
+}
+
+function removeFromCart(id) {
+  delete cart[id];
+  updateCartUI();
+}
+
+function changeCartQty(id, d) {
+  if (!cart[id]) return;
+  cart[id].qty = Math.max(1, cart[id].qty + d);
+  if (cart[id].qty === 0) delete cart[id];
+  updateCartUI();
+}
+
+function getTotal() {
+  var t = 0;
+  for (var k in cart) t += cart[k].price * cart[k].qty;
+  return t;
+}
+
+function getCount() {
+  var c = 0;
+  for (var k in cart) c += cart[k].qty;
+  return c;
+}
+
+function updateCartUI() {
+  var total = getTotal();
+  var count = getCount();
+
+  var countEl = document.getElementById('cartCount');
+  if (countEl) {
+    countEl.textContent = count;
+    if (count > 0) {
+      countEl.classList.add('bump');
+      setTimeout(function() { countEl.classList.remove('bump'); }, 300);
+    }
+  }
+
+  var itemsEl = document.getElementById('cartItems');
+  if (itemsEl) {
+    if (count === 0) {
+      itemsEl.innerHTML = '<div class="cart-empty"><div class="cart-empty-icon">\uD83D\uDECD</div><p>Votre panier est vide.<br>Ajoutez des attentions pour sublimer votre s\u00e9jour.</p></div>';
+    } else {
+      var html = '';
+      for (var id in cart) {
+        var item = cart[id];
+        html += '<div class="cart-item">';
+        html += '<div class="cart-item-emoji">' + item.emoji + '</div>';
+        html += '<div class="cart-item-info">';
+        html += '<div class="cart-item-name">' + item.label + '</div>';
+        html += '<div class="cart-item-price">' + item.price + ' \u20ac</div>';
+        html += '<div class="cart-item-qty">';
+        html += '<button type="button" class="cq-btn" onclick="changeCartQty(' + id + ',-1)">\u2212</button>';
+        html += '<div class="cq-num">' + item.qty + '</div>';
+        html += '<button type="button" class="cq-btn" onclick="changeCartQty(' + id + ',1)">+</button>';
+        html += '</div></div>';
+        html += '<button type="button" class="cart-item-remove" onclick="removeFromCart(' + id + ')">\u00d7</button>';
+        html += '</div>';
+      }
+      itemsEl.innerHTML = html;
+    }
+  }
+
+  var totalEl = document.getElementById('cartTotal');
+  if (totalEl) totalEl.textContent = total + ' \u20ac';
+  var checkTotalEl = document.getElementById('checkoutTotal');
+  if (checkTotalEl) checkTotalEl.textContent = total + ' \u20ac';
+  var checkBtn = document.getElementById('checkoutBtn');
+  if (checkBtn) checkBtn.disabled = (count === 0);
+}
+
+function openCart() {
+  document.getElementById('cartSidebar').classList.add('open');
+  document.getElementById('cartOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeCart() {
+  document.getElementById('cartSidebar').classList.remove('open');
+  document.getElementById('cartOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function toggleCart() {
+  var s = document.getElementById('cartSidebar');
+  if (s.classList.contains('open')) closeCart(); else openCart();
+}
+
+function openCheckout() {
+  closeCart();
+  var total = getTotal();
+  var html = '<div class="recap-title">R\u00e9capitulatif</div>';
+  for (var id in cart) {
+    var item = cart[id];
+    html += '<div class="recap-item"><span>' + item.emoji + ' ' + item.label + ' \u00d7 ' + item.qty + '</span><span>' + (item.price * item.qty) + ' \u20ac</span></div>';
+  }
+  html += '<div class="recap-total"><div class="recap-total-label">Total</div><div class="recap-total-amount">' + total + ' \u20ac</div></div>';
+  document.getElementById('orderRecap').innerHTML = html;
+  var tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  document.getElementById('checkin').min = tomorrow.toISOString().split('T')[0];
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  setTimeout(function() { mountStripeCard(); }, 100);
+}
+
+function closeCheckout() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+  document.getElementById('successScreen').classList.remove('show');
+  document.getElementById('checkoutForm').style.display = '';
+}
+
+function selectPayment(el, method) {
+  var opts = document.querySelectorAll('.payment-option');
+  for (var i = 0; i < opts.length; i++) opts[i].classList.remove('selected');
+  el.classList.add('selected');
+  selectedPayment = method;
+}
+
+function submitOrder() {
+  var fn = document.getElementById('firstName').value.trim();
+  var ln = document.getElementById('lastName').value.trim();
+  var em = document.getElementById('email').value.trim();
+  var ph = document.getElementById('phone').value.trim();
+  var ci = document.getElementById('checkin').value;
+  if (!fn || !ln || !em || !ph || !ci) {
+    alert('Merci de remplir tous les champs obligatoires (*)');
+    return;
+  }
+
+  var total = getTotal();
+  var itemNames = [];
+  for (var id in cart) { itemNames.push(cart[id].label + ' x' + cart[id].qty); }
+  var description = 'Suite Santorini - ' + itemNames.join(', ') + ' - ' + fn + ' ' + ln + ' - Arrivee ' + ci;
+
+  var btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.textContent = 'Traitement en cours...';
+
+  fetch('/.netlify/functions/create-payment-intent', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ amount: total, description: description })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    if (data.error) {
+      document.getElementById('stripe-error').textContent = data.error;
+      btn.disabled = false;
+      btn.textContent = '\uD83D\uDCB3 Payer par carte';
+      return null;
+    }
+    return stripeInstance.confirmCardPayment(data.clientSecret, {
+      payment_method: {
+        card: cardElement,
+        billing_details: { name: fn + ' ' + ln, email: em, phone: ph }
+      }
+    });
+  })
+  .then(function(result) {
+    if (!result) return;
+    if (result.error) {
+      document.getElementById('stripe-error').textContent = result.error.message;
+      btn.disabled = false;
+      btn.textContent = '\uD83D\uDCB3 Payer par carte';
+    } else if (result.paymentIntent && result.paymentIntent.status === 'succeeded') {
+      showSuccess(total);
+    }
+  })
+  .catch(function(err) {
+    document.getElementById('stripe-error').textContent = 'Erreur : ' + err.message;
+    btn.disabled = false;
+    btn.textContent = '\uD83D\uDCB3 Payer par carte';
+  });
+}
+
+function showSuccess(total) {
+  var detailHtml = '<strong>R\u00e9sum\u00e9 :</strong><br>';
+  for (var id in cart) {
+    detailHtml += cart[id].emoji + ' ' + cart[id].label + ' \u00d7 ' + cart[id].qty + '<br>';
+  }
+  detailHtml += '<br><strong>Total : ' + total + ' \u20ac</strong><br>Paiement par carte accept\u00e9 \u2705';
+  document.getElementById('successDetail').innerHTML = detailHtml;
+  document.getElementById('checkoutForm').style.display = 'none';
+  document.getElementById('successScreen').classList.add('show');
+  cart = {};
+  updateCartUI();
+}
+
+updateCartUI();
+</script>
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+var STRIPE_PK = 'pk_live_51SekFM5gqv1AoFTbmCyn6csD3JHtNj4NzwgER5LlRi9aR4bgZnmaMD6AzGBKDfbls6UuAEGWD0azX7VOGoozb7rq00uc2msUbG';
+var stripeInstance = Stripe(STRIPE_PK);
+var stripeElements = stripeInstance.elements();
+var cardElement = null;
+
+function mountStripeCard() {
+  if (cardElement) return;
+  cardElement = stripeElements.create('card', {
+    style: {
+      base: {
+        fontFamily: "'Jost', sans-serif",
+        fontSize: '15px',
+        color: '#2A2A2A',
+        '::placeholder': { color: '#bbb' }
+      },
+      invalid: { color: '#c0392b' }
+    },
+    hidePostalCode: true
+  });
+  cardElement.mount('#stripe-card-element');
+  cardElement.on('change', function(e) {
+    document.getElementById('stripe-error').textContent = e.error ? e.error.message : '';
+  });
+}
+</script>
+</body>
+</html>
