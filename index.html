@@ -358,6 +358,9 @@ footer{background:var(--charcoal);padding:2.5rem 4rem;display:flex;justify-conte
       <div class="cart-subtotal-label">Total</div>
       <div class="cart-subtotal-amount" id="cartTotal">0 €</div>
     </div>
+    <button type="button" onclick="closeCart()" style="width:100%;padding:.75rem;background:transparent;border:1px solid var(--gold);color:var(--gold);cursor:pointer;font-family:'Jost',sans-serif;font-size:.7rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.7rem;transition:all .3s;" onmouseover="this.style.background='var(--gold)';this.style.color='var(--white)'" onmouseout="this.style.background='transparent';this.style.color='var(--gold)'">
+      ← Ajouter d'autres attentions
+    </button>
     <div class="cart-note">🔒 Paiement sécurisé · Livraison dans votre suite</div>
     <button type="button" class="checkout-btn" id="checkoutBtn" onclick="openCheckout()" disabled>Commander → <span id="checkoutTotal">0 €</span></button>
   </div>
