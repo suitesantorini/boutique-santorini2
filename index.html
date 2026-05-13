@@ -396,9 +396,11 @@ footer{background:var(--charcoal);padding:2.5rem 4rem;display:flex;justify-conte
         </div>
         <div class="payment-methods">
           <div class="payment-title">Paiement par carte bancaire</div>
-          <div style="background:var(--cream);padding:.8rem 1.2rem;border-left:3px solid var(--gold);font-size:.75rem;color:var(--grey);font-weight:300;">
-            🔒 Paiement 100% sécurisé par Stripe · Visa, Mastercard, American Express, Apple Pay acceptées · Vous serez redirigé vers la page de paiement Stripe
+          <div style="background:var(--cream);padding:.8rem 1.2rem;margin-bottom:.8rem;border-left:3px solid var(--gold);font-size:.75rem;color:var(--grey);font-weight:300;">
+            🔒 Paiement 100% sécurisé par Stripe · Visa, Mastercard, American Express acceptées
           </div>
+          <div id="stripe-card-element" style="border:1px solid var(--grey-light);padding:.9rem 1rem;background:var(--white);font-size:.9rem;min-height:42px;"></div>
+          <div id="stripe-error" style="color:#c0392b;font-size:.75rem;margin-top:.5rem;min-height:1rem;"></div>
         </div>
         <button type="button" class="submit-btn" id="submitBtn" onclick="submitOrder()">💳 Payer par carte</button>
       </div>
@@ -562,6 +564,7 @@ function openCheckout() {
   document.getElementById('checkin').min = tomorrow.toISOString().split('T')[0];
   document.getElementById('modalOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
+  setTimeout(function() { mountStripeCard(); }, 100);
 }
 
 function closeCheckout() {
@@ -592,15 +595,47 @@ function submitOrder() {
   var total = getTotal();
   var itemNames = [];
   for (var id in cart) { itemNames.push(cart[id].label + ' x' + cart[id].qty); }
+  var description = 'Suite Santorini - ' + itemNames.join(', ') + ' - ' + fn + ' ' + ln + ' - Arrivee ' + ci;
 
-  // Redirection vers Stripe Payment Link avec montant pré-rempli
-  var stripeUrl = 'https://buy.stripe.com/8x23co88weUXgtw9L12cg06'
-    + '?prefilled_email=' + encodeURIComponent(em)
-    + '&amount=' + (total * 100)
-    + '&locale=fr';
+  var btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.textContent = 'Traitement en cours...';
 
-  showSuccess(total);
-  setTimeout(function() { window.location.href = stripeUrl; }, 1200);
+  fetch('/.netlify/functions/create-payment-intent', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ amount: total, description: description })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    if (data.error) {
+      document.getElementById('stripe-error').textContent = data.error;
+      btn.disabled = false;
+      btn.textContent = '\uD83D\uDCB3 Payer par carte';
+      return null;
+    }
+    return stripeInstance.confirmCardPayment(data.clientSecret, {
+      payment_method: {
+        card: cardElement,
+        billing_details: { name: fn + ' ' + ln, email: em, phone: ph }
+      }
+    });
+  })
+  .then(function(result) {
+    if (!result) return;
+    if (result.error) {
+      document.getElementById('stripe-error').textContent = result.error.message;
+      btn.disabled = false;
+      btn.textContent = '\uD83D\uDCB3 Payer par carte';
+    } else if (result.paymentIntent && result.paymentIntent.status === 'succeeded') {
+      showSuccess(total);
+    }
+  })
+  .catch(function(err) {
+    document.getElementById('stripe-error').textContent = 'Erreur : ' + err.message;
+    btn.disabled = false;
+    btn.textContent = '\uD83D\uDCB3 Payer par carte';
+  });
 }
 
 function showSuccess(total) {
@@ -617,6 +652,27 @@ function showSuccess(total) {
 }
 
 updateCartUI();
+</script>
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+var stripeInstance = Stripe('pk_live_51SekFM5gqv1AoFTbmCyn6csD3JHtNj4NzwgER5LlRi9aR4bgZnmaMD6AzGBKDfbls6UuAEGWD0azX7VOGoozb7rq00uc2msUbG');
+var stripeElements = stripeInstance.elements();
+var cardElement = null;
+
+function mountStripeCard() {
+  if (cardElement) return;
+  cardElement = stripeElements.create('card', {
+    style: {
+      base: { fontFamily: "'Jost', sans-serif", fontSize: '15px', color: '#2A2A2A', '::placeholder': { color: '#bbb' } },
+      invalid: { color: '#c0392b' }
+    },
+    hidePostalCode: true
+  });
+  cardElement.mount('#stripe-card-element');
+  cardElement.on('change', function(e) {
+    document.getElementById('stripe-error').textContent = e.error ? e.error.message : '';
+  });
+}
 </script>
 </body>
 </html>
