@@ -41,9 +41,8 @@ body{font-family:'Jost',sans-serif;background:var(--white);color:var(--charcoal)
 .products-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;max-width:1200px;margin:0 auto;}
 .product-card{border:1px solid var(--grey-light);background:var(--white);display:flex;flex-direction:column;transition:border-color .3s,box-shadow .3s,transform .3s;position:relative;overflow:hidden;}
 .product-card:hover{border-color:var(--gold);box-shadow:0 12px 40px rgba(201,169,110,.15);transform:translateY(-4px);}
-.product-card.featured{grid-column:span 2;}
-.product-img{height:230px;overflow:hidden;position:relative;}
-.product-card.featured .product-img{height:300px;}
+
+.product-img{height:160px;overflow:hidden;position:relative;}
 .product-img img{width:100%;height:100%;object-fit:cover;transition:transform .7s ease;display:block;}
 .product-card:hover .product-img img{transform:scale(1.05);}
 .product-tag{position:absolute;top:1rem;left:1rem;background:var(--blue-deep);color:var(--white);font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;padding:.3rem .8rem;}
@@ -152,14 +151,14 @@ footer{background:var(--charcoal);padding:2.5rem 4rem;display:flex;justify-conte
   .hero-banner,.intro{padding:1.5rem;}
   .products-section{padding:2.5rem 1.5rem;}
   .products-grid{grid-template-columns:1fr 1fr;}
-  .product-card.featured{grid-column:span 2;}
+  
   .cart-sidebar{width:100%;right:-100%;}
   footer{padding:2rem 1.5rem;flex-direction:column;text-align:center;}
   .form-row{grid-template-columns:1fr;}
 }
 @media(max-width:600px){
   .products-grid{grid-template-columns:1fr;}
-  .product-card.featured{grid-column:span 1;}
+  
   .intro-badge{display:none;}
 }
 </style>
@@ -193,7 +192,7 @@ footer{background:var(--charcoal);padding:2.5rem 4rem;display:flex;justify-conte
   <div class="products-grid">
 
     <!-- 1. Décoration Romantique (featured) -->
-    <div class="product-card featured">
+    <div class="product-card">
       <div class="product-img">
         <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1544195021378079668/original/01412a00-7dab-48ba-8d77-2e57b6a48126.jpeg?im_w=1200" alt="Décoration Romantique">
         <div class="product-tag bestseller">⭐ Bestseller</div>
@@ -219,7 +218,7 @@ footer{background:var(--charcoal);padding:2.5rem 4rem;display:flex;justify-conte
     </div>
 
     <!-- 5. Arrivée Anticipée (featured) -->
-    <div class="product-card featured">
+    <div class="product-card">
       <div class="product-img">
         <img src="https://img.freepik.com/premium-photo/loving-couple-walking-with-suitcases-airport_116547-39422.jpg?w=996" alt="Arrivée anticipée">
         <div class="product-tag" style="background:var(--gold);">✨ À la une</div>
@@ -243,7 +242,7 @@ footer{background:var(--charcoal);padding:2.5rem 4rem;display:flex;justify-conte
     </div>
 
     <!-- 6. Départ Tardif (featured) -->
-    <div class="product-card featured">
+    <div class="product-card">
       <div class="product-img">
         <img src="https://laviedesreines.com/wp-content/uploads/2020/10/couple-together-in-bed-2048x1365.jpg" alt="Départ tardif">
         <div class="product-tag" style="background:var(--gold);">✨ À la une</div>
@@ -397,11 +396,9 @@ footer{background:var(--charcoal);padding:2.5rem 4rem;display:flex;justify-conte
         </div>
         <div class="payment-methods">
           <div class="payment-title">Paiement par carte bancaire</div>
-          <div style="background:var(--cream);padding:.8rem 1.2rem;margin-bottom:.8rem;border-left:3px solid var(--gold);font-size:.75rem;color:var(--grey);font-weight:300;">
-            🔒 Paiement 100% sécurisé par Stripe · Visa, Mastercard, American Express acceptées
+          <div style="background:var(--cream);padding:.8rem 1.2rem;border-left:3px solid var(--gold);font-size:.75rem;color:var(--grey);font-weight:300;">
+            🔒 Paiement 100% sécurisé par Stripe · Visa, Mastercard, American Express, Apple Pay acceptées · Vous serez redirigé vers la page de paiement Stripe
           </div>
-          <div id="stripe-card-element" style="border:1px solid var(--grey-light);padding:.9rem 1rem;background:var(--white);font-size:.9rem;"></div>
-          <div id="stripe-error" style="color:#c0392b;font-size:.75rem;margin-top:.5rem;min-height:1rem;"></div>
         </div>
         <button type="button" class="submit-btn" id="submitBtn" onclick="submitOrder()">💳 Payer par carte</button>
       </div>
@@ -565,7 +562,6 @@ function openCheckout() {
   document.getElementById('checkin').min = tomorrow.toISOString().split('T')[0];
   document.getElementById('modalOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
-  setTimeout(function() { mountStripeCard(); }, 100);
 }
 
 function closeCheckout() {
@@ -596,47 +592,15 @@ function submitOrder() {
   var total = getTotal();
   var itemNames = [];
   for (var id in cart) { itemNames.push(cart[id].label + ' x' + cart[id].qty); }
-  var description = 'Suite Santorini - ' + itemNames.join(', ') + ' - ' + fn + ' ' + ln + ' - Arrivee ' + ci;
 
-  var btn = document.getElementById('submitBtn');
-  btn.disabled = true;
-  btn.textContent = 'Traitement en cours...';
+  // Redirection vers Stripe Payment Link avec montant pré-rempli
+  var stripeUrl = 'https://buy.stripe.com/8x23co88weUXgtw9L12cg06'
+    + '?prefilled_email=' + encodeURIComponent(em)
+    + '&amount=' + (total * 100)
+    + '&locale=fr';
 
-  fetch('/.netlify/functions/create-payment-intent', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ amount: total, description: description })
-  })
-  .then(function(r) { return r.json(); })
-  .then(function(data) {
-    if (data.error) {
-      document.getElementById('stripe-error').textContent = data.error;
-      btn.disabled = false;
-      btn.textContent = '\uD83D\uDCB3 Payer par carte';
-      return null;
-    }
-    return stripeInstance.confirmCardPayment(data.clientSecret, {
-      payment_method: {
-        card: cardElement,
-        billing_details: { name: fn + ' ' + ln, email: em, phone: ph }
-      }
-    });
-  })
-  .then(function(result) {
-    if (!result) return;
-    if (result.error) {
-      document.getElementById('stripe-error').textContent = result.error.message;
-      btn.disabled = false;
-      btn.textContent = '\uD83D\uDCB3 Payer par carte';
-    } else if (result.paymentIntent && result.paymentIntent.status === 'succeeded') {
-      showSuccess(total);
-    }
-  })
-  .catch(function(err) {
-    document.getElementById('stripe-error').textContent = 'Erreur : ' + err.message;
-    btn.disabled = false;
-    btn.textContent = '\uD83D\uDCB3 Payer par carte';
-  });
+  showSuccess(total);
+  setTimeout(function() { window.location.href = stripeUrl; }, 1200);
 }
 
 function showSuccess(total) {
@@ -653,33 +617,6 @@ function showSuccess(total) {
 }
 
 updateCartUI();
-</script>
-<script src="https://js.stripe.com/v3/"></script>
-<script>
-var STRIPE_PK = 'pk_live_51SekFM5gqv1AoFTbmCyn6csD3JHtNj4NzwgER5LlRi9aR4bgZnmaMD6AzGBKDfbls6UuAEGWD0azX7VOGoozb7rq00uc2msUbG';
-var stripeInstance = Stripe(STRIPE_PK);
-var stripeElements = stripeInstance.elements();
-var cardElement = null;
-
-function mountStripeCard() {
-  if (cardElement) return;
-  cardElement = stripeElements.create('card', {
-    style: {
-      base: {
-        fontFamily: "'Jost', sans-serif",
-        fontSize: '15px',
-        color: '#2A2A2A',
-        '::placeholder': { color: '#bbb' }
-      },
-      invalid: { color: '#c0392b' }
-    },
-    hidePostalCode: true
-  });
-  cardElement.mount('#stripe-card-element');
-  cardElement.on('change', function(e) {
-    document.getElementById('stripe-error').textContent = e.error ? e.error.message : '';
-  });
-}
 </script>
 </body>
 </html>
