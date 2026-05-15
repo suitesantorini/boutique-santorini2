@@ -9,6 +9,7 @@ exports.handler = async (event) => {
     if (!amount || amount < 1) {
       return { statusCode: 400, body: JSON.stringify({ error: 'Montant invalide' }) };
     }
+    // amount reçu en euros → on convertit en centimes pour Stripe
     const paymentIntent = await stripe.paymentIntents.create({
       amount: Math.round(amount * 100),
       currency: 'eur',
@@ -17,10 +18,18 @@ exports.handler = async (event) => {
     });
     return {
       statusCode: 200,
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      },
       body: JSON.stringify({ clientSecret: paymentIntent.client_secret }),
     };
   } catch (err) {
-    return { statusCode: 500, body: JSON.stringify({ error: err.message }) };
+    console.error('Stripe error:', err.message);
+    return {
+      statusCode: 500,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ error: err.message })
+    };
   }
 };
