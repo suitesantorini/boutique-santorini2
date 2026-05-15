@@ -47,6 +47,26 @@ body{font-family:'Jost',sans-serif;background:var(--white);color:var(--charcoal)
 .product-card:hover .product-img img{transform:scale(1.05);}
 .product-tag{position:absolute;top:1rem;left:1rem;background:var(--blue-deep);color:var(--white);font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;padding:.3rem .8rem;}
 .product-tag.bestseller{background:var(--gold);}
+
+/* ── BADGE PHOTO NON CONTRACTUELLE ── */
+.nc-banner {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(27, 58, 107, 0.82);
+  color: rgba(240, 222, 184, 0.95);
+  font-family: 'Jost', sans-serif;
+  font-size: .65rem;
+  font-weight: 400;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  text-align: center;
+  padding: .45rem .5rem;
+  backdrop-filter: blur(2px);
+  pointer-events: none;
+}
+
 .product-body{padding:1.8rem;display:flex;flex-direction:column;flex:1;}
 .product-emoji{font-size:1.6rem;margin-bottom:.6rem;}
 .product-name{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:400;color:var(--blue-deep);margin-bottom:.5rem;line-height:1.2;}
@@ -124,22 +144,20 @@ body{font-family:'Jost',sans-serif;background:var(--white);color:var(--charcoal)
 .recap-total-amount{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:300;color:var(--gold);}
 .payment-methods{margin-bottom:1.5rem;}
 .payment-title{font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;padding-bottom:.5rem;border-bottom:1px solid var(--grey-light);}
-.payment-options{display:flex;flex-direction:column;gap:.7rem;}
-.payment-option{display:flex;align-items:center;gap:.8rem;padding:.9rem 1rem;border:1px solid var(--grey-light);cursor:pointer;transition:border-color .3s;}
-.payment-option:hover,.payment-option.selected{border-color:var(--gold);background:rgba(201,169,110,.05);}
-.payment-radio{width:16px;height:16px;border-radius:50%;border:2px solid var(--grey-light);flex-shrink:0;transition:all .2s;}
-.payment-option.selected .payment-radio{border-color:var(--gold);background:var(--gold);}
-.payment-icon{font-size:1.2rem;}
-.payment-label{font-size:.82rem;font-weight:400;color:var(--charcoal);}
-.payment-sub{font-size:.7rem;color:var(--grey);font-weight:300;}
 .submit-btn{width:100%;padding:1.1rem;background:var(--gold);color:var(--white);border:none;cursor:pointer;font-family:'Jost',sans-serif;font-size:.78rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;transition:background .3s;display:flex;align-items:center;justify-content:center;gap:.6rem;}
 .submit-btn:hover{background:var(--gold-dark);}
+.submit-btn:disabled{background:var(--grey-light);color:var(--grey);cursor:not-allowed;}
 .success-screen{display:none;flex-direction:column;align-items:center;justify-content:center;padding:3rem 2.5rem;text-align:center;gap:1.2rem;}
 .success-screen.show{display:flex;}
 .success-icon{font-size:4rem;}
 .success-title{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;color:var(--blue-deep);}
 .success-text{font-size:.88rem;font-weight:300;color:var(--grey);line-height:1.8;max-width:380px;}
 .success-detail{background:var(--cream);padding:1.2rem 1.8rem;width:100%;font-size:.82rem;font-weight:300;color:var(--charcoal);line-height:1.8;text-align:left;}
+
+/* STRIPE CARD */
+#stripe-card-element{border:1px solid var(--grey-light);padding:.9rem 1rem;background:var(--white);font-size:.9rem;min-height:44px;transition:border-color .3s;}
+#stripe-card-element.StripeElement--focus{border-color:var(--gold);}
+#stripe-error{color:#c0392b;font-size:.75rem;margin-top:.5rem;min-height:1.2rem;line-height:1.5;}
 
 footer{background:var(--charcoal);padding:2.5rem 4rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;}
 .footer-logo{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:300;letter-spacing:.15em;color:var(--white);}
@@ -151,14 +169,12 @@ footer{background:var(--charcoal);padding:2.5rem 4rem;display:flex;justify-conte
   .hero-banner,.intro{padding:1.5rem;}
   .products-section{padding:2.5rem 1.5rem;}
   .products-grid{grid-template-columns:1fr 1fr;}
-  
   .cart-sidebar{width:100%;right:-100%;}
   footer{padding:2rem 1.5rem;flex-direction:column;text-align:center;}
   .form-row{grid-template-columns:1fr;}
 }
 @media(max-width:600px){
   .products-grid{grid-template-columns:1fr;}
-  
   .intro-badge{display:none;}
 }
 </style>
@@ -167,7 +183,7 @@ footer{background:var(--charcoal);padding:2.5rem 4rem;display:flex;justify-conte
 
 <header class="hero-banner">
   <div class="hero-brand">
-    <a href="index.html" class="brand-logo">SUITE SANTORINI</a>
+    <a class='brand-logo' href='/'>SUITE SANTORINI</a>
     <div class="brand-sep"></div>
     <div class="brand-sub">La Boutique · Attentions sur mesure</div>
   </div>
@@ -191,7 +207,7 @@ footer{background:var(--charcoal);padding:2.5rem 4rem;display:flex;justify-conte
 <section class="products-section">
   <div class="products-grid">
 
-    <!-- 1. Décoration Romantique (featured) -->
+    <!-- 1. Décoration Romantique -->
     <div class="product-card">
       <div class="product-img">
         <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1544195021378079668/original/01412a00-7dab-48ba-8d77-2e57b6a48126.jpeg?im_w=1200" alt="Décoration Romantique">
@@ -208,7 +224,7 @@ footer{background:var(--charcoal);padding:2.5rem 4rem;display:flex;justify-conte
           <span class="include-tag">Mise en scène complète</span>
         </div>
         <div class="product-footer">
-          <div class="product-price">29 € </div>
+          <div class="product-price">29 €</div>
           <div style="display:flex;align-items:center;gap:.6rem;">
             <div class="qty-selector" id="qty-1"><button type="button" class="qty-btn" onclick="changeQty(1,-1)">−</button><div class="qty-num" id="qnum-1">1</div><button type="button" class="qty-btn" onclick="changeQty(1,1)">+</button></div>
             <button type="button" class="add-btn" id="addbtn-1" data-id="1" onclick="addToCart(this)"><span class="btn-icon">+</span> Ajouter</button>
@@ -217,7 +233,7 @@ footer{background:var(--charcoal);padding:2.5rem 4rem;display:flex;justify-conte
       </div>
     </div>
 
-    <!-- 5. Arrivée Anticipée (featured) -->
+    <!-- 2. Arrivée Anticipée -->
     <div class="product-card">
       <div class="product-img">
         <img src="https://img.freepik.com/premium-photo/loving-couple-walking-with-suitcases-airport_116547-39422.jpg?w=996" alt="Arrivée anticipée">
@@ -232,7 +248,7 @@ footer{background:var(--charcoal);padding:2.5rem 4rem;display:flex;justify-conte
           <span class="include-tag">+2h de suite</span>
         </div>
         <div class="product-footer">
-          <div class="product-price">24 € </div>
+          <div class="product-price">24 €</div>
           <div style="display:flex;align-items:center;gap:.6rem;">
             <div class="qty-selector" id="qty-5"><button type="button" class="qty-btn" onclick="changeQty(5,-1)">−</button><div class="qty-num" id="qnum-5">1</div><button type="button" class="qty-btn" onclick="changeQty(5,1)">+</button></div>
             <button type="button" class="add-btn" id="addbtn-5" data-id="5" onclick="addToCart(this)"><span class="btn-icon">+</span> Ajouter</button>
@@ -241,7 +257,7 @@ footer{background:var(--charcoal);padding:2.5rem 4rem;display:flex;justify-conte
       </div>
     </div>
 
-    <!-- 6. Départ Tardif (featured) -->
+    <!-- 3. Départ Tardif -->
     <div class="product-card">
       <div class="product-img">
         <img src="https://laviedesreines.com/wp-content/uploads/2020/10/couple-together-in-bed-2048x1365.jpg" alt="Départ tardif">
@@ -256,7 +272,7 @@ footer{background:var(--charcoal);padding:2.5rem 4rem;display:flex;justify-conte
           <span class="include-tag">+2h de suite</span>
         </div>
         <div class="product-footer">
-          <div class="product-price">24 € </div>
+          <div class="product-price">24 €</div>
           <div style="display:flex;align-items:center;gap:.6rem;">
             <div class="qty-selector" id="qty-6"><button type="button" class="qty-btn" onclick="changeQty(6,-1)">−</button><div class="qty-num" id="qnum-6">1</div><button type="button" class="qty-btn" onclick="changeQty(6,1)">+</button></div>
             <button type="button" class="add-btn" id="addbtn-6" data-id="6" onclick="addToCart(this)"><span class="btn-icon">+</span> Ajouter</button>
@@ -265,7 +281,7 @@ footer{background:var(--charcoal);padding:2.5rem 4rem;display:flex;justify-conte
       </div>
     </div>
 
-    <!-- 2. Attention Pétillante -->
+    <!-- 4. Attention Pétillante -->
     <div class="product-card">
       <div class="product-img">
         <img src="https://lachampagnedesophieclaeys.fr/wp-content/uploads/2022/05/3F45FE59-A414-4978-A20B-73BD760178C4-scaled.jpeg" alt="Champagne">
@@ -280,7 +296,7 @@ footer{background:var(--charcoal);padding:2.5rem 4rem;display:flex;justify-conte
           <span class="include-tag">Mis au frais</span>
         </div>
         <div class="product-footer">
-          <div class="product-price">49 € </div>
+          <div class="product-price">49 €</div>
           <div style="display:flex;align-items:center;gap:.6rem;">
             <div class="qty-selector" id="qty-2"><button type="button" class="qty-btn" onclick="changeQty(2,-1)">−</button><div class="qty-num" id="qnum-2">1</div><button type="button" class="qty-btn" onclick="changeQty(2,1)">+</button></div>
             <button type="button" class="add-btn" id="addbtn-2" data-id="2" onclick="addToCart(this)"><span class="btn-icon">+</span> Ajouter</button>
@@ -289,14 +305,15 @@ footer{background:var(--charcoal);padding:2.5rem 4rem;display:flex;justify-conte
       </div>
     </div>
 
-    <!-- 3. Pack Sucré -->
+    <!-- 5. Pack Sucré — PHOTO NON CONTRACTUELLE -->
     <div class="product-card">
       <div class="product-img">
         <img src="https://rq1sg9-1t.myshopify.com/cdn/shop/files/petit-dej-ideal.jpg?v=1766268798&width=533" alt="Pack Sucré">
+        <div class="nc-banner">📸 Photo non contractuelle</div>
       </div>
       <div class="product-body">
         <div class="product-emoji">🍰</div>
-        <div class="product-name">Pack Sucré <span style="font-size:.6rem;font-weight:300;color:var(--grey);font-family:'Jost',sans-serif;font-style:italic;">(photo non contractuelle)</span></div>
+        <div class="product-name">Pack Sucré</div>
         <div class="product-desc">Un plateau de douceurs pour un réveil gourmand dans votre suite méditerranéenne.</div>
         <div class="product-includes">
           <span class="include-tag">Jus de fruit</span>
@@ -305,7 +322,7 @@ footer{background:var(--charcoal);padding:2.5rem 4rem;display:flex;justify-conte
           <span class="include-tag">Café & thés</span>
         </div>
         <div class="product-footer">
-          <div class="product-price">14 € </div>
+          <div class="product-price">14 €</div>
           <div style="display:flex;align-items:center;gap:.6rem;">
             <div class="qty-selector" id="qty-3"><button type="button" class="qty-btn" onclick="changeQty(3,-1)">−</button><div class="qty-num" id="qnum-3">1</div><button type="button" class="qty-btn" onclick="changeQty(3,1)">+</button></div>
             <button type="button" class="add-btn" id="addbtn-3" data-id="3" onclick="addToCart(this)"><span class="btn-icon">+</span> Ajouter</button>
@@ -314,14 +331,15 @@ footer{background:var(--charcoal);padding:2.5rem 4rem;display:flex;justify-conte
       </div>
     </div>
 
-    <!-- 4. Pack Salé -->
+    <!-- 6. Pack Salé — PHOTO NON CONTRACTUELLE -->
     <div class="product-card">
       <div class="product-img">
         <img src="https://rq1sg9-1t.myshopify.com/cdn/shop/files/eccbc87e4b5ce2fe28308fd9f2a7baf3-phb-1926-5f871fb702212.jpg?v=1766268920&width=533" alt="Pack Salé">
+        <div class="nc-banner">📸 Photo non contractuelle</div>
       </div>
       <div class="product-body">
         <div class="product-emoji">🧀</div>
-        <div class="product-name">Pack Salé <span style="font-size:.6rem;font-weight:300;color:var(--grey);font-family:'Jost',sans-serif;font-style:italic;">(photo non contractuelle)</span></div>
+        <div class="product-name">Pack Salé</div>
         <div class="product-desc">L'apéro parfait pour votre soirée en amoureux. Tout est prêt à votre arrivée.</div>
         <div class="product-includes">
           <span class="include-tag">Soda</span>
@@ -331,7 +349,7 @@ footer{background:var(--charcoal);padding:2.5rem 4rem;display:flex;justify-conte
           <span class="include-tag">Olives</span>
         </div>
         <div class="product-footer">
-          <div class="product-price">14 € </div>
+          <div class="product-price">14 €</div>
           <div style="display:flex;align-items:center;gap:.6rem;">
             <div class="qty-selector" id="qty-4"><button type="button" class="qty-btn" onclick="changeQty(4,-1)">−</button><div class="qty-num" id="qnum-4">1</div><button type="button" class="qty-btn" onclick="changeQty(4,1)">+</button></div>
             <button type="button" class="add-btn" id="addbtn-4" data-id="4" onclick="addToCart(this)"><span class="btn-icon">+</span> Ajouter</button>
@@ -399,11 +417,11 @@ footer{background:var(--charcoal);padding:2.5rem 4rem;display:flex;justify-conte
         </div>
         <div class="payment-methods">
           <div class="payment-title">Paiement par carte bancaire</div>
-          <div style="background:var(--cream);padding:.8rem 1.2rem;margin-bottom:.8rem;border-left:3px solid var(--gold);font-size:.75rem;color:var(--grey);font-weight:300;">
+          <div style="background:var(--cream);padding:.8rem 1.2rem;margin-bottom:1rem;border-left:3px solid var(--gold);font-size:.75rem;color:var(--grey);font-weight:300;">
             🔒 Paiement 100% sécurisé par Stripe · Visa, Mastercard, American Express acceptées
           </div>
-          <div id="stripe-card-element" style="border:1px solid var(--grey-light);padding:.9rem 1rem;background:var(--white);font-size:.9rem;min-height:42px;"></div>
-          <div id="stripe-error" style="color:#c0392b;font-size:.75rem;margin-top:.5rem;min-height:1rem;"></div>
+          <div id="stripe-card-element"></div>
+          <div id="stripe-error"></div>
         </div>
         <button type="button" class="submit-btn" id="submitBtn" onclick="submitOrder()">💳 Payer par carte</button>
       </div>
@@ -421,20 +439,19 @@ footer{background:var(--charcoal);padding:2.5rem 4rem;display:flex;justify-conte
 <footer>
   <div class="footer-logo">SUITE SANTORINI · La Boutique</div>
   <p class="footer-text">Pézenas, Occitanie · Minimum 24h avant l'arrivée</p>
-  <a href="index.html" class="footer-back">← Retour au site principal</a>
+  <a class='footer-back' href='/'>← Retour au site principal</a>
 </footer>
 
 <script>
 var cart = {};
-var selectedPayment = 'virement';
 
 var products = {
-  1: { name: 'Decoration Romantique', label: 'D\u00e9coration Romantique', price: 29,  emoji: '\uD83C\uDF39' },
-  2: { name: 'Attention Petillante',  label: 'Attention P\u00e9tillante',  price: 49,  emoji: '\uD83E\uDD42' },
-  3: { name: 'Pack Sucre',            label: 'Pack Sucr\u00e9',            price: 14,  emoji: '\uD83C\uDF70' },
-  4: { name: 'Pack Sale',             label: 'Pack Sal\u00e9',             price: 14,  emoji: '\uD83E\uDDC0' },
-  5: { name: 'Arrivee Anticipee',     label: 'Arriv\u00e9e Anticip\u00e9e',price: 24,  emoji: '\uD83E\uDDF3' },
-  6: { name: 'Depart Tardif',         label: 'D\u00e9part Tardif',         price: 24,  emoji: '\u2600\uFE0F' }
+  1: { name: 'Decoration Romantique',  label: 'Décoration Romantique',  price: 29,  emoji: '🌹' },
+  2: { name: 'Attention Petillante',   label: 'Attention Pétillante',   price: 49,  emoji: '🥂' },
+  3: { name: 'Pack Sucre',             label: 'Pack Sucré',             price: 14,  emoji: '🍰' },
+  4: { name: 'Pack Sale',              label: 'Pack Salé',              price: 14,  emoji: '🧀' },
+  5: { name: 'Arrivee Anticipee',      label: 'Arrivée Anticipée',      price: 24,  emoji: '🧳' },
+  6: { name: 'Depart Tardif',          label: 'Départ Tardif',          price: 24,  emoji: '☀️' }
 };
 
 function addToCart(el) {
@@ -443,19 +460,13 @@ function addToCart(el) {
   if (!p) return;
   var qEl = document.getElementById('qnum-' + id);
   var qty = qEl ? parseInt(qEl.textContent) || 1 : 1;
-  if (cart[id]) {
-    cart[id].qty += qty;
-  } else {
-    cart[id] = { label: p.label, price: p.price, emoji: p.emoji, qty: qty };
-  }
+  if (cart[id]) { cart[id].qty += qty; }
+  else { cart[id] = { label: p.label, price: p.price, emoji: p.emoji, qty: qty }; }
   var addBtn = document.getElementById('addbtn-' + id);
   if (addBtn) {
     addBtn.classList.add('added');
-    addBtn.textContent = '\u2713 Ajout\u00e9 !';
-    setTimeout(function() {
-      addBtn.classList.remove('added');
-      addBtn.textContent = '+ Ajouter';
-    }, 1800);
+    addBtn.textContent = '✓ Ajouté !';
+    setTimeout(function() { addBtn.classList.remove('added'); addBtn.textContent = '+ Ajouter'; }, 1800);
   }
   if (qEl) qEl.textContent = '1';
   updateCartUI();
@@ -467,10 +478,7 @@ function changeQty(id, d) {
   if (el) el.textContent = Math.max(1, parseInt(el.textContent) + d);
 }
 
-function removeFromCart(id) {
-  delete cart[id];
-  updateCartUI();
-}
+function removeFromCart(id) { delete cart[id]; updateCartUI(); }
 
 function changeCartQty(id, d) {
   if (!cart[id]) return;
@@ -479,60 +487,42 @@ function changeCartQty(id, d) {
   updateCartUI();
 }
 
-function getTotal() {
-  var t = 0;
-  for (var k in cart) t += cart[k].price * cart[k].qty;
-  return t;
-}
-
-function getCount() {
-  var c = 0;
-  for (var k in cart) c += cart[k].qty;
-  return c;
-}
+function getTotal() { var t = 0; for (var k in cart) t += cart[k].price * cart[k].qty; return t; }
+function getCount() { var c = 0; for (var k in cart) c += cart[k].qty; return c; }
 
 function updateCartUI() {
   var total = getTotal();
   var count = getCount();
-
   var countEl = document.getElementById('cartCount');
   if (countEl) {
     countEl.textContent = count;
-    if (count > 0) {
-      countEl.classList.add('bump');
-      setTimeout(function() { countEl.classList.remove('bump'); }, 300);
-    }
+    if (count > 0) { countEl.classList.add('bump'); setTimeout(function() { countEl.classList.remove('bump'); }, 300); }
   }
-
   var itemsEl = document.getElementById('cartItems');
   if (itemsEl) {
     if (count === 0) {
-      itemsEl.innerHTML = '<div class="cart-empty"><div class="cart-empty-icon">\uD83D\uDECD</div><p>Votre panier est vide.<br>Ajoutez des attentions pour sublimer votre s\u00e9jour.</p></div>';
+      itemsEl.innerHTML = '<div class="cart-empty"><div class="cart-empty-icon">🛍</div><p>Votre panier est vide.<br>Ajoutez des attentions pour sublimer votre séjour.</p></div>';
     } else {
       var html = '';
       for (var id in cart) {
         var item = cart[id];
-        html += '<div class="cart-item">';
-        html += '<div class="cart-item-emoji">' + item.emoji + '</div>';
-        html += '<div class="cart-item-info">';
-        html += '<div class="cart-item-name">' + item.label + '</div>';
-        html += '<div class="cart-item-price">' + item.price + ' \u20ac</div>';
+        html += '<div class="cart-item"><div class="cart-item-emoji">' + item.emoji + '</div>';
+        html += '<div class="cart-item-info"><div class="cart-item-name">' + item.label + '</div>';
+        html += '<div class="cart-item-price">' + item.price + ' €</div>';
         html += '<div class="cart-item-qty">';
-        html += '<button type="button" class="cq-btn" onclick="changeCartQty(' + id + ',-1)">\u2212</button>';
+        html += '<button type="button" class="cq-btn" onclick="changeCartQty(' + id + ',-1)">−</button>';
         html += '<div class="cq-num">' + item.qty + '</div>';
         html += '<button type="button" class="cq-btn" onclick="changeCartQty(' + id + ',1)">+</button>';
         html += '</div></div>';
-        html += '<button type="button" class="cart-item-remove" onclick="removeFromCart(' + id + ')">\u00d7</button>';
-        html += '</div>';
+        html += '<button type="button" class="cart-item-remove" onclick="removeFromCart(' + id + ')">×</button></div>';
       }
       itemsEl.innerHTML = html;
     }
   }
-
   var totalEl = document.getElementById('cartTotal');
-  if (totalEl) totalEl.textContent = total + ' \u20ac';
+  if (totalEl) totalEl.textContent = total + ' €';
   var checkTotalEl = document.getElementById('checkoutTotal');
-  if (checkTotalEl) checkTotalEl.textContent = total + ' \u20ac';
+  if (checkTotalEl) checkTotalEl.textContent = total + ' €';
   var checkBtn = document.getElementById('checkoutBtn');
   if (checkBtn) checkBtn.disabled = (count === 0);
 }
@@ -555,19 +545,24 @@ function toggleCart() {
 function openCheckout() {
   closeCart();
   var total = getTotal();
-  var html = '<div class="recap-title">R\u00e9capitulatif</div>';
+  var html = '<div class="recap-title">Récapitulatif</div>';
   for (var id in cart) {
     var item = cart[id];
-    html += '<div class="recap-item"><span>' + item.emoji + ' ' + item.label + ' \u00d7 ' + item.qty + '</span><span>' + (item.price * item.qty) + ' \u20ac</span></div>';
+    html += '<div class="recap-item"><span>' + item.emoji + ' ' + item.label + ' × ' + item.qty + '</span><span>' + (item.price * item.qty) + ' €</span></div>';
   }
-  html += '<div class="recap-total"><div class="recap-total-label">Total</div><div class="recap-total-amount">' + total + ' \u20ac</div></div>';
+  html += '<div class="recap-total"><div class="recap-total-label">Total</div><div class="recap-total-amount">' + total + ' €</div></div>';
   document.getElementById('orderRecap').innerHTML = html;
   var tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
   document.getElementById('checkin').min = tomorrow.toISOString().split('T')[0];
   document.getElementById('modalOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
-  setTimeout(function() { mountStripeCard(); }, 100);
+  document.getElementById('stripe-error').textContent = '';
+  // Reset le bouton si nécessaire
+  var btn = document.getElementById('submitBtn');
+  btn.disabled = false;
+  btn.innerHTML = '💳 Payer par carte';
+  setTimeout(function() { mountStripeCard(); }, 150);
 }
 
 function closeCheckout() {
@@ -577,21 +572,19 @@ function closeCheckout() {
   document.getElementById('checkoutForm').style.display = '';
 }
 
-function selectPayment(el, method) {
-  var opts = document.querySelectorAll('.payment-option');
-  for (var i = 0; i < opts.length; i++) opts[i].classList.remove('selected');
-  el.classList.add('selected');
-  selectedPayment = method;
-}
-
 function submitOrder() {
   var fn = document.getElementById('firstName').value.trim();
   var ln = document.getElementById('lastName').value.trim();
   var em = document.getElementById('email').value.trim();
   var ph = document.getElementById('phone').value.trim();
   var ci = document.getElementById('checkin').value;
+
   if (!fn || !ln || !em || !ph || !ci) {
     alert('Merci de remplir tous les champs obligatoires (*)');
+    return;
+  }
+  if (!cardElement) {
+    document.getElementById('stripe-error').textContent = 'Le module de paiement n\'est pas chargé. Veuillez rafraîchir la page.';
     return;
   }
 
@@ -602,20 +595,37 @@ function submitOrder() {
 
   var btn = document.getElementById('submitBtn');
   btn.disabled = true;
-  btn.textContent = 'Traitement en cours...';
+  btn.innerHTML = '⏳ Traitement en cours...';
+  document.getElementById('stripe-error').textContent = '';
+
+  // IMPORTANT : Stripe attend le montant en centimes (ex: 29€ = 2900)
+  
 
   fetch('/.netlify/functions/create-payment-intent', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ amount: total, description: description })
+    body: JSON.stringify({
+      amount: total,           // en euros (la fonction Netlify fait ×100)
+      
+      description: description,
+      customerEmail: em,
+      customerName: fn + ' ' + ln
+    })
   })
-  .then(function(r) { return r.json(); })
+  .then(function(r) {
+    if (!r.ok) {
+      return r.text().then(function(txt) {
+        throw new Error('Erreur serveur (' + r.status + ') : ' + txt);
+      });
+    }
+    return r.json();
+  })
   .then(function(data) {
     if (data.error) {
-      document.getElementById('stripe-error').textContent = data.error;
-      btn.disabled = false;
-      btn.textContent = '\uD83D\uDCB3 Payer par carte';
-      return null;
+      throw new Error(data.error);
+    }
+    if (!data.clientSecret) {
+      throw new Error('Réponse inattendue du serveur. Veuillez contacter Romain.');
     }
     return stripeInstance.confirmCardPayment(data.clientSecret, {
       payment_method: {
@@ -627,26 +637,27 @@ function submitOrder() {
   .then(function(result) {
     if (!result) return;
     if (result.error) {
-      document.getElementById('stripe-error').textContent = result.error.message;
-      btn.disabled = false;
-      btn.textContent = '\uD83D\uDCB3 Payer par carte';
-    } else if (result.paymentIntent && result.paymentIntent.status === 'succeeded') {
+      throw new Error(result.error.message);
+    }
+    if (result.paymentIntent && result.paymentIntent.status === 'succeeded') {
       showSuccess(total);
+    } else {
+      throw new Error('Paiement non confirmé. Statut : ' + (result.paymentIntent ? result.paymentIntent.status : 'inconnu'));
     }
   })
   .catch(function(err) {
-    document.getElementById('stripe-error').textContent = 'Erreur : ' + err.message;
+    document.getElementById('stripe-error').textContent = '⚠️ ' + err.message;
     btn.disabled = false;
-    btn.textContent = '\uD83D\uDCB3 Payer par carte';
+    btn.innerHTML = '💳 Payer par carte';
   });
 }
 
 function showSuccess(total) {
-  var detailHtml = '<strong>R\u00e9sum\u00e9 :</strong><br>';
+  var detailHtml = '<strong>Récapitulatif :</strong><br>';
   for (var id in cart) {
-    detailHtml += cart[id].emoji + ' ' + cart[id].label + ' \u00d7 ' + cart[id].qty + '<br>';
+    detailHtml += cart[id].emoji + ' ' + cart[id].label + ' × ' + cart[id].qty + '<br>';
   }
-  detailHtml += '<br><strong>Total : ' + total + ' \u20ac</strong><br>Paiement par carte accept\u00e9 \u2705';
+  detailHtml += '<br><strong>Total : ' + total + ' €</strong><br>Paiement par carte accepté ✅';
   document.getElementById('successDetail').innerHTML = detailHtml;
   document.getElementById('checkoutForm').style.display = 'none';
   document.getElementById('successScreen').classList.add('show');
@@ -656,6 +667,7 @@ function showSuccess(total) {
 
 updateCartUI();
 </script>
+
 <script src="https://js.stripe.com/v3/"></script>
 <script>
 var stripeInstance = Stripe('pk_live_51SekFM5gqv1AoFTbmCyn6csD3JHtNj4NzwgER5LlRi9aR4bgZnmaMD6AzGBKDfbls6UuAEGWD0azX7VOGoozb7rq00uc2msUbG');
@@ -663,10 +675,23 @@ var stripeElements = stripeInstance.elements();
 var cardElement = null;
 
 function mountStripeCard() {
-  if (cardElement) return;
+  var container = document.getElementById('stripe-card-element');
+  if (!container) return;
+  // Si déjà monté et le container n'est pas vide, on garde
+  if (cardElement && container.querySelector('iframe')) return;
+  // Sinon on crée/remonte
+  if (cardElement) {
+    try { cardElement.unmount(); } catch(e) {}
+    cardElement = null;
+  }
   cardElement = stripeElements.create('card', {
     style: {
-      base: { fontFamily: "'Jost', sans-serif", fontSize: '15px', color: '#2A2A2A', '::placeholder': { color: '#bbb' } },
+      base: {
+        fontFamily: "'Jost', sans-serif",
+        fontSize: '15px',
+        color: '#2A2A2A',
+        '::placeholder': { color: '#bbb' }
+      },
       invalid: { color: '#c0392b' }
     },
     hidePostalCode: true
